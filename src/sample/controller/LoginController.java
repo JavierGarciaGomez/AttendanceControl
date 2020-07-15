@@ -24,17 +24,22 @@ public class LoginController implements Initializable {
     public Button btnCancel;
 
     public void login(ActionEvent event) throws SQLException {
-        String userName=this.txtUser.getText();
+        String userName=this.txtUser.getText().toUpperCase();
         String pass=this.txtPass.getText();
 
         User user = new User(userName, pass);
         if(user.checkLogin()){
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainPanel.fxml"));
-                System.out.println(fxmlLoader);
-                Parent root1 = fxmlLoader.load();
+                user = user.getUser(userName);
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainWindow.fxml"));
+                Parent root = fxmlLoader.load();
+
+                MainController controller = fxmlLoader.getController();
+                controller.initData(user);
+
+
                 Stage stage = new Stage();
-                Scene scene = new Scene(root1);
+                Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.setTitle("Main Window");
                 stage.show();

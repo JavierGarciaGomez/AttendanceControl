@@ -62,7 +62,7 @@
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <Button fx:id="btnAddPicture" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add picture" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <Button fx:id="btnAddPicture" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addPicture" text="Add picture" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <font>
             <Font size="18.0" />
          </font>

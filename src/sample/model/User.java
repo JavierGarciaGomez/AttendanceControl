@@ -137,4 +137,22 @@ public class User {
         connectionDB.closeConnection();
         return isAvailable;
     }
+
+    public User getUser(String username) throws SQLException {
+        ConnectionDB connectionDB = new ConnectionDB();
+        String sql = "SELECT * FROM users WHERE user = '" + this.user+"'";
+        ResultSet resultSet = connectionDB.executeQuery(sql);
+        resultSet.next();
+        int id=resultSet.getInt(1);
+        String name=resultSet.getString(2);
+        String lastName=resultSet.getString(3);
+        String userName=resultSet.getString(4);
+        String pass=resultSet.getString(5);
+        boolean isActive=resultSet.getBoolean(6);
+        User user = new User(id, name, lastName, userName, pass, isActive);
+        connectionDB.closeConnection();
+
+        return user;
+
+    }
 }

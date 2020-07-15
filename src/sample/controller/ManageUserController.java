@@ -2,11 +2,17 @@ package sample.controller;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import sample.model.User;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -41,28 +47,47 @@ public class ManageUserController implements Initializable {
         int id= Integer.parseInt(txtId.getText());
         String name = txtName.getText();
         String lastName = txtlastName.getText();
-        String userName = txtUser.getText();
+        String userName = txtUser.getText().toUpperCase();
         String pass = txtPass.getText();
         boolean isActive = chkActive.isSelected();
+        String errorList ="No se ha podido registrar el usuario, porque se encontraron los siguientes errores:\n";
 
         User user = new User(id, name,lastName,userName,pass, isActive);
 
-
         try {
+
             if(!user.checkAvailableId()){
-                System.out.println("Id ya registrado");
+                errorList+="Id ya registrado\n";
+                isValid=false;
+            }
+            if(name.length()<=3){
+                errorList+="El nombre no puede tener menos de tres caracteres\n";
+                isValid=false;
+            }
+            if(lastName.length()<=3){
+                errorList+="El apellido no puede tener menos de tres caracteres\n";
+                isValid=false;
+            }
+            if(userName.length()!=3){
+                errorList+="El usuario se debe conformar por tres caracteres\n";
                 isValid=false;
             }
             if(!user.checkAvailableUser()){
-                System.out.println("Usuario ya registrado");
+                errorList+="Usuario ya registrado\n";
                 isValid=false;
             }
-
+            if(pass.length()<4 || pass.length()>11){
+                errorList+="El password debe tener entre 4 y 10 caracteres\n";
+                isValid=false;
+            }
             if (isValid){
                 user.addUser();
             }
             else{
-                System.out.println("No se puede agregar");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setContentText(errorList);
+                alert.showAndWait();
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -126,4 +151,20 @@ public class ManageUserController implements Initializable {
         }
     }
 
+    public void addPicture(ActionEvent event) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddImageView.fxml"));
+
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.showAndWait();
+
+    }
 }
