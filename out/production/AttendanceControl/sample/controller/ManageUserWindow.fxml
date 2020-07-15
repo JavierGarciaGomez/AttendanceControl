@@ -57,16 +57,11 @@
             <Font size="18.0" />
          </font>
       </PasswordField>
-      <CheckBox fx:id="chkActive" mnemonicParsing="false" text="Active" GridPane.rowIndex="5">
+      <CheckBox fx:id="chkActive" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Active" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <Button fx:id="btnAddPicture" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addPicture" text="Add picture" GridPane.columnIndex="1" GridPane.rowIndex="5">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
         <buttons>
           <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#register" text="Register new user" />

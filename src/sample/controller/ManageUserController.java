@@ -82,6 +82,7 @@ public class ManageUserController implements Initializable {
             }
             if (isValid){
                 user.addUser();
+                addPicture(user);
             }
             else{
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -142,8 +143,6 @@ public class ManageUserController implements Initializable {
             secondChar=nameElements[nameElements.length-2].charAt(0);
             thirdChar=nameElements[nameElements.length-1].charAt(0);
             userName=Character.toString(firstChar)+Character.toString(secondChar)+Character.toString(thirdChar);
-            System.out.println(fullName);
-            System.out.println(userName);
             txtUser.setText(userName);
 
         } catch(ArrayIndexOutOfBoundsException | StringIndexOutOfBoundsException e){
@@ -151,12 +150,16 @@ public class ManageUserController implements Initializable {
         }
     }
 
-    public void addPicture(ActionEvent event) {
+    public void addPicture(User user) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddImageView.fxml"));
+
 
         Parent root = null;
         try {
             root = fxmlLoader.load();
+            AddImageController controller = fxmlLoader.getController();
+            controller.initData(user);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -165,6 +168,10 @@ public class ManageUserController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.showAndWait();
+
+        Stage thisStage = (Stage) btnCancel.getScene().getWindow();
+        thisStage.close();
+
 
     }
 }

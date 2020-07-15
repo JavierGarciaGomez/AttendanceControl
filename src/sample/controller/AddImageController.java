@@ -1,11 +1,15 @@
 package sample.controller;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
+import javafx.stage.Stage;
+import sample.model.User;
 
 import java.io.*;
 import java.net.URL;
@@ -15,11 +19,19 @@ import java.util.ResourceBundle;
 
 public class AddImageController implements Initializable {
     public ImageView imvImage;
-    public Button saveImage;
+    public Button btnSave;
+    private User user;
+    private List<File> files;
+    private File copy;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+    }
+
+    public void initData(User user){
+        this.user=user;
     }
 
 
@@ -31,31 +43,39 @@ public class AddImageController implements Initializable {
     }
 
     public void handleOnDragDropped(DragEvent dragEvent) throws FileNotFoundException {
-        List<File> files = dragEvent.getDragboard().getFiles();
+        files = dragEvent.getDragboard().getFiles();
         Image image = new Image(new FileInputStream(files.get(0)));
         imvImage.setImage(image);
-        File copy = new File("res\\RRR.png");
+    }
 
-        // LECTURA BINARIA
+    public void save(ActionEvent event) {
+        copy = new File("res\\"+user.getUser()+".png");
         List<Integer> bytes = new ArrayList<>();
         try {
-            // Creo el FileInputStream
             FileInputStream fileInputStream = new FileInputStream(files.get(0));
             int stream;
             while ((stream = fileInputStream.read()) != -1) {
                 bytes.add(stream);
             }
-            System.out.println("Terminé el fileInputStream");
             fileInputStream.close();
+
+
+
 
             FileOutputStream fileOutputStream = new FileOutputStream(copy, true);
             for (Integer b : bytes) {
                 fileOutputStream.write(b);
             }
-            System.out.println("He terminado de hacer la copia");
+            System.out.println(copy.length());
+            Stage thisStage = (Stage) btnSave.getScene().getWindow();
+            thisStage.close();
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
 
+
+
+    }
 }

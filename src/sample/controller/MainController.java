@@ -18,7 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -34,15 +34,28 @@ public class MainController implements Initializable {
     private User user;
 
     public void registerTime(ActionEvent event) {
-        openScene("RegisterWindow.fxml", "Register window");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterWindow.fxml"));
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Manage users");
+
+            RegisterController controller = fxmlLoader.getController();
+            controller.initData(this.user);
+
+            stage.showAndWait();
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void manageUsers(ActionEvent event) {
-        openScene("ManageUserWindow.fxml", "Manage Users");
-    }
-
-    public void openScene(String fxmlName, String title){
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlName));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ManageUserWindow.fxml"));
         Parent root = null;
         try {
             root = fxmlLoader.load();
@@ -53,7 +66,7 @@ public class MainController implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle(title);
+        stage.setTitle("Manage users");
         stage.showAndWait();
     }
 
