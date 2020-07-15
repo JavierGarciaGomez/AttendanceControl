@@ -17,6 +17,11 @@ public class ConnectionDB {
         connection.setAutoCommit(true);
     }
 
+
+    public Connection getConnection() {
+        return connection;
+    }
+
     public ResultSet executeQuery(String sql) throws SQLException {
         Statement statement = this.connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);

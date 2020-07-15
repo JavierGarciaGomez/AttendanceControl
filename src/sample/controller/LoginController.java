@@ -37,6 +37,7 @@ public class LoginController implements Initializable {
                 Scene scene = new Scene(root1);
                 stage.setScene(scene);
                 stage.setTitle("Main Window");
+                stage.show();
                 Stage thisStage = (Stage) btnCancel.getScene().getWindow();
                 thisStage.close();
             } catch (IOException e) {

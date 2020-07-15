@@ -10,21 +10,20 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="sample.controller.MainPanelController">
+<GridPane alignment="CENTER" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.MainPanelController">
    <columnConstraints>
-      <ColumnConstraints />
+      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints />
-      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
    </rowConstraints>
    <children>
       <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="4">
@@ -35,37 +34,38 @@
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Button alignment="TOP_CENTER" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100.0" text="Registrar" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+      <Button fx:id="btnRegister" alignment="TOP_CENTER" minWidth="-Infinity" mnemonicParsing="false" onAction="#registerTime" prefWidth="100.0" text="Registrar" GridPane.halignment="CENTER" GridPane.rowIndex="2">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Button alignment="TOP_CENTER" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100.0" text="Incidencias" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+      <Button fx:id="btnIncidences" alignment="TOP_CENTER" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100.0" text="Incidencias" GridPane.halignment="CENTER" GridPane.rowIndex="3">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Button alignment="TOP_CENTER" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100.0" text="Modificar" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <Button fx:id="btnModify" alignment="TOP_CENTER" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100.0" text="Modificar" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Button alignment="TOP_CENTER" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100.0" text="Revisar" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <Button fx:id="btnReview" alignment="TOP_CENTER" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100.0" text="Revisar" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Button alignment="TOP_CENTER" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100.0" text="Reportes" GridPane.rowIndex="4">
+      <Button fx:id="btnReports" alignment="TOP_CENTER" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100.0" text="Reportes" GridPane.rowIndex="4">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Button alignment="TOP_CENTER" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100.0" text="Agregar" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <Button fx:id="btnManageUsers" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+              minWidth="-Infinity" mnemonicParsing="false" onAction="#manageUsers" prefWidth="100.0" text="Gestiona usuarios" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <font>
-            <Font size="15.0" />
+            <Font size="10.0" />
          </font>
       </Button>
-      <Button alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="31.0" text="Cambiar Usuario" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5">
+      <Button fx:id="btnChangeUser" alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="31.0" text="Cambiar Usuario" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5">
          <font>
             <Font size="15.0" />
          </font>
