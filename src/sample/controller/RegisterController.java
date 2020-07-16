@@ -2,11 +2,14 @@ package sample.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import sample.model.TimeRegister;
 import sample.model.User;
+import sample.model.Utilities;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -74,55 +77,43 @@ public class RegisterController implements Initializable {
 
     public void register(ActionEvent event) {
         try {
+            // Fields
+            boolean isValid=true;
+            String errorList ="No se ha podido registrar el usuario, porque se encontraron los siguientes errores:\n";
             // Getting the data
             String user = lblUser.getText();
             String branch = cboBranch.getSelectionModel().getSelectedItem().toString();
             String action = cboAction.getSelectionModel().getSelectedItem().toString();
             TimeRegister timeRegister = new TimeRegister(user, branch, action);
-
-            boolean isValid=true;
-
             if(timeRegister.isDateAndActionRegistered()){
-                System.out.println("NO SE PUEDE REGISTRAR PORQUE YA HAY ALGO");
-            } else{
-                if (timeRegister.insertTimeRegister()) {
-                }
-
+                errorList+="Ya se cuenta con un registro de "+action+" de "+user+" con fecha de hoy";
+                isValid=false;
             }
 
-
-
-            // Test if the date is repeated
-            // Register new data
-            LocalDate now = LocalDate.now();
-            newDateToRegister=now.toString();
-
-            System.out.println("datos anteriores: "+lastActionRegistered+" "+lastDateRegistered);
-            System.out.println("datos nuevos: "+action+" "+newDateToRegister);
-
-            if(newDateToRegister.equals(lastDateRegistered)&&action.equals(lastActionRegistered)){
-                System.out.println("Coinciden las fechas y acción");
+            // Check if the action is correct
+            if(action.equals(lastActionRegistered)){
+                String error = "Tú última acción registrada fue también una "+action+". ¿Estás seguro que quieres " +
+                        "registrarlo?";
+                boolean answer = new Utilities().showAlert(Alert.AlertType.CONFIRMATION, "¿Estás seguro de querer continuar?", error);
+                if(!answer) return;
             } else{
                 System.out.println("No coincide la fecha y acción");
             }
 
+            if(isValid){
+                timeRegister.insertTimeRegister();
+                new Utilities().showAlert(Alert.AlertType.INFORMATION, "Success", "Información guardada con éxito");
+                Stage thisStage = (Stage) btnCancel.getScene().getWindow();
+                thisStage.close();
 
-
-
-
-
-
-
+            }            else{
+                new Utilities().showAlert(Alert.AlertType.ERROR, "Error de registro", errorList);
+            }
 
 
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
         }
-
-
-
-
-
 
     }
 

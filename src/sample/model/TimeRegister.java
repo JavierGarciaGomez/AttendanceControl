@@ -150,11 +150,12 @@ public class TimeRegister {
         // Connecting to DATABASE
         ConnectionDB connectionDB = new ConnectionDB();
         String sql = "SELECT * FROM attendanceRegister WHERE userName = ? " +
-                "AND time > ? AND time < ?";
+                "AND action = ? AND time > ? AND time < ?";
         PreparedStatement preparedStatement = connectionDB.getConnection().prepareStatement(sql);
         preparedStatement.setString(1, this.userName);
-        preparedStatement.setString(2, originalDateAsString);
-        preparedStatement.setString(3, maxDateAsString);
+        preparedStatement.setString(2, this.action);
+        preparedStatement.setString(3, originalDateAsString);
+        preparedStatement.setString(4, maxDateAsString);
         System.out.println(preparedStatement);
 
         // Getting the resultset
