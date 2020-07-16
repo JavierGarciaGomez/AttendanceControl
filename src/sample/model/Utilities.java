@@ -3,6 +3,8 @@ package sample.model;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class Utilities {
@@ -23,5 +25,12 @@ public class Utilities {
             alert.showAndWait();
         }
         return confirm;
+    }
+
+    public String getNowAsText(){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String nowAsText=dtf.format(now);
+        return nowAsText;
     }
 }

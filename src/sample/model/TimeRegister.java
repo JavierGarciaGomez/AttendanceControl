@@ -22,6 +22,7 @@ public class TimeRegister {
     private String branch;
     private String action;
     private Date date;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public TimeRegister() {
     }
@@ -63,6 +64,15 @@ public class TimeRegister {
 
     public Date getDate() {
         return date;
+    }
+
+    public String getDateAsString() {
+        this.date = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        Calendar calendar = Calendar.getInstance();
+        this.date = calendar.getTime();
+        String dateAsString = sdf.format(this.date);
+        return dateAsString;
     }
 
     public boolean insertTimeRegister() throws SQLException {
@@ -170,12 +180,12 @@ public class TimeRegister {
         return isRegistered;
     }
 
-    public ObservableList<TimeRegister> gettimeRegisters() throws SQLException {
+    public ObservableList<TimeRegister> getTimeRegisters() throws SQLException {
         ObservableList<TimeRegister> timeRegisters = FXCollections.observableArrayList();
 
         // SQL
         ConnectionDB connectionDB = new ConnectionDB();
-        String sql = "SELECT * FROM attendanceRegister WHERE username=?)";
+        String sql = "SELECT * FROM attendanceRegister WHERE username=?";
         PreparedStatement preparedStatement = connectionDB.getConnection().prepareStatement(sql);
         preparedStatement.setString(1, userName);
         System.out.println(preparedStatement);

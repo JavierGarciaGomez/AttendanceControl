@@ -1,6 +1,5 @@
 package sample.controller;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,7 +17,6 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
 import java.util.ResourceBundle;
-import java.util.function.UnaryOperator;
 
 public class ManageUserController implements Initializable {
     public Button btnRegister;
@@ -151,7 +149,7 @@ public class ManageUserController implements Initializable {
     }
 
     public void addPicture(User user) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddImageView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddImageWindow.fxml"));
 
 
         Parent root = null;

@@ -117,12 +117,10 @@ public class RegisterController implements Initializable {
 
     }
 
-    public static void main(String[] args) {
 
-
+    public void cancel(ActionEvent event) {
+        Stage thisStage = (Stage) btnCancel.getScene().getWindow();
+        thisStage.close();
 
     }
-
-
-
 }

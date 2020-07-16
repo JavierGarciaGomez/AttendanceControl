@@ -67,9 +67,34 @@ public class MainController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Review registers");
+
+        ReviewRegistersController controller = fxmlLoader.getController();
+        controller.initData(this.user);
+
         stage.showAndWait();
     }
 
+    public void openIncidences(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("IncidencesWindow.fxml"));
+            Parent root = null;
+
+            root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Incidences Window");
+
+            IncidencesController controller = fxmlLoader.getController();
+            controller.initData(this.user);
+
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void manageUsers(ActionEvent event) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ManageUserWindow.fxml"));
@@ -111,5 +136,6 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
     }
+
 
 }
