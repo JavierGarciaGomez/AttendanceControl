@@ -54,6 +54,23 @@ public class MainController implements Initializable {
         }
     }
 
+    public void reviewRegisters(ActionEvent event) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ReviewRegistersWindow.fxml"));
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Review registers");
+        stage.showAndWait();
+    }
+
+
     public void manageUsers(ActionEvent event) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ManageUserWindow.fxml"));
         Parent root = null;
@@ -94,4 +111,5 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
     }
+
 }

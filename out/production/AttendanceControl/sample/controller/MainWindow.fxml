@@ -45,7 +45,7 @@
             <Font size="15.0" />
          </font>
       </Button>
-      <Button fx:id="btnReview" alignment="TOP_CENTER" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100.0" text="Revisar" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <Button fx:id="btnReview" alignment="TOP_CENTER" minWidth="-Infinity" mnemonicParsing="false" onAction="#reviewRegisters" prefWidth="100.0" text="Revisar" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <font>
             <Font size="15.0" />
          </font>
