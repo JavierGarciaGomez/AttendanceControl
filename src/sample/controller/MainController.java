@@ -74,6 +74,28 @@ public class MainController implements Initializable {
         stage.showAndWait();
     }
 
+    public void changeRegisters(ActionEvent event) {
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ChangeRegistersWindow.fxml"));
+            Parent root = null;
+            root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Review registers");
+
+            ChangeRegistersController controller = fxmlLoader.getController();
+            controller.initData(this.user);
+
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void openIncidences(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("IncidencesWindow.fxml"));
@@ -136,6 +158,7 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
     }
+
 
 
 }

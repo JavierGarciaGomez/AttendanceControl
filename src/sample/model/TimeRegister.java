@@ -180,7 +180,7 @@ public class TimeRegister {
         return isRegistered;
     }
 
-    public ObservableList<TimeRegister> getTimeRegisters() throws SQLException {
+    public ObservableList<TimeRegister> getTimeRegistersforUser() throws SQLException {
         ObservableList<TimeRegister> timeRegisters = FXCollections.observableArrayList();
 
         // SQL
@@ -188,6 +188,29 @@ public class TimeRegister {
         String sql = "SELECT * FROM attendanceRegister WHERE username=?";
         PreparedStatement preparedStatement = connectionDB.getConnection().prepareStatement(sql);
         preparedStatement.setString(1, userName);
+        System.out.println(preparedStatement);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        // Loop the resultset
+        while(resultSet.next()){
+            int id = resultSet.getInt(1);
+            userName = resultSet.getString(2);
+            String branch = resultSet.getString(3);
+            String action = resultSet.getString(4);
+            Date date = resultSet.getTimestamp(5);
+            TimeRegister timeRegister = new TimeRegister(id, userName, branch, action, date);
+            timeRegisters.add(timeRegister);
+        }
+        return timeRegisters;
+    }
+
+    public ObservableList<TimeRegister> getTimeRegisters() throws SQLException {
+        ObservableList<TimeRegister> timeRegisters = FXCollections.observableArrayList();
+
+        // SQL
+        ConnectionDB connectionDB = new ConnectionDB();
+        String sql = "SELECT * FROM attendanceRegister";
+        PreparedStatement preparedStatement = connectionDB.getConnection().prepareStatement(sql);
         System.out.println(preparedStatement);
         ResultSet resultSet = preparedStatement.executeQuery();
 

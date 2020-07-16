@@ -12,9 +12,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class ReviewRegistersController implements Initializable {
+public class ChangeRegistersController implements Initializable {
     public TableView tblTable;
-    public TableColumn <TimeRegister, Integer> colId;
+    public TableColumn<TimeRegister, Integer> colId;
     public TableColumn <TimeRegister, String> colUserName;
     public TableColumn <TimeRegister, String> colBranch;
     public TableColumn <TimeRegister, String> colAction;
@@ -42,7 +42,7 @@ public class ReviewRegistersController implements Initializable {
         try {
             TimeRegister timeRegister = new TimeRegister(user.getUser(), "", "");
 
-            ObservableList<TimeRegister> timeRegisters = timeRegister.getTimeRegistersforUser();
+            ObservableList<TimeRegister> timeRegisters = timeRegister.getTimeRegisters();
             this.tblTable.setItems(timeRegisters);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
