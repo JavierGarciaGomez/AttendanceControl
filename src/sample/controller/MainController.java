@@ -49,7 +49,7 @@ public class MainController implements Initializable {
             controller.initData(this.user);
 
             stage.showAndWait();
-        } catch (IOException | SQLException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
