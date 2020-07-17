@@ -3,6 +3,7 @@ package sample.model;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -42,6 +43,9 @@ public class Utilities {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         String time = dateTimeFormatter.format(now);
         System.out.println(time);
+
+        Timestamp timestamp = Timestamp.valueOf(now);
+        System.out.println("Timestamp" +timestamp);
     }
 
     public Date StringToDate(String string) throws ParseException {

@@ -5,17 +5,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import sample.model.ConnectionDB;
 import sample.model.TimeRegister;
 import sample.model.User;
-import sample.model.Utilities;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 public class ChangeRegistersController implements Initializable {
@@ -40,7 +37,6 @@ public class ChangeRegistersController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     public void initData(User user) {
@@ -50,7 +46,6 @@ public class ChangeRegistersController implements Initializable {
         this.colBranch.setCellValueFactory(new PropertyValueFactory<>("branch"));
         this.colAction.setCellValueFactory(new PropertyValueFactory<>("action"));
         this.colTime.setCellValueFactory(new PropertyValueFactory<>("dateAsString"));
-
         loadTable();
     }
 
@@ -106,15 +101,14 @@ public class ChangeRegistersController implements Initializable {
             LocalDate localDate = dtpDatePicker.getValue();
             int hour = spinHour.getValue();
             int min = spinMin.getValue();
-            Date date = new Utilities().StringToDate(localDate.toString()+" "+hour+":"+min);
-            TimeRegister timeRegister = new TimeRegister(id,userName,branch,action,date);
+
+            LocalDateTime localDateTime = localDate.atTime(hour, min);
+            TimeRegister timeRegister = new TimeRegister(id, userName, branch, action, localDateTime);
             timeRegister.updateTimeRegister();
-        } catch (ParseException | SQLException e) {
+            this.loadTable();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-
     }
 
     @FXML

@@ -1,6 +1,5 @@
 package sample.controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -13,31 +12,20 @@ import sample.model.Utilities;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 public class RegisterController implements Initializable {
     public Button btnRegister;
     public Button btnCancel;
     public Label lblUser;
-    public ComboBox cboBranch;
-    public ComboBox cboAction;
+    public ComboBox<String> cboBranch;
+    public ComboBox<String> cboAction;
     public Label lblDateHour;
     public Label lblLastRegister;
-    private User user;
-    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-    private String lastDateRegistered;
+    private final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     private String lastActionRegistered;
-    private String newDateToRegister;
-    private String newActiontoRegister;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,11 +33,10 @@ public class RegisterController implements Initializable {
         cboAction.getSelectionModel().select(0);
         LocalDateTime now = LocalDateTime.now();
         System.out.println(now);
-        lblDateHour.setText(dtf.format(now));
+        lblDateHour.setText(DTF.format(now));
     }
 
     public void initData(User user) {
-        this.user = user;
         lblUser.setText(user.getUser());
 
         try {
@@ -59,15 +46,7 @@ public class RegisterController implements Initializable {
             String action = lastTimeRegister.getAction();
             action = action.equalsIgnoreCase("Entrada") ? "Salida" : "Entrada";
             cboAction.getSelectionModel().select(action);
-
-            // Save lastDay and lastAction
-            lastDateRegistered=sdf.format(lastTimeRegister.getDate());
             lastActionRegistered=lastTimeRegister.getAction();
-            System.out.println(lastDateRegistered+" "+lastActionRegistered);
-
-
-
-
         } catch (SQLException throwables) {
             lblLastRegister.setText("Último registro: " + "No se tienen registros previos");
         }
@@ -75,21 +54,20 @@ public class RegisterController implements Initializable {
 
     }
 
-    public void register(ActionEvent event) {
+    public void register() {
         try {
             // Fields
             boolean isValid=true;
             String errorList ="No se ha podido registrar el usuario, porque se encontraron los siguientes errores:\n";
             // Getting the data
             String user = lblUser.getText();
-            String branch = cboBranch.getSelectionModel().getSelectedItem().toString();
-            String action = cboAction.getSelectionModel().getSelectedItem().toString();
+            String branch = cboBranch.getSelectionModel().getSelectedItem();
+            String action = cboAction.getSelectionModel().getSelectedItem();
             TimeRegister timeRegister = new TimeRegister(user, branch, action);
             if(timeRegister.isDateAndActionRegistered()){
                 errorList+="Ya se cuenta con un registro de "+action+" de "+user+" con fecha de hoy";
                 isValid=false;
             }
-
             // Check if the action is correct
             if(action.equals(lastActionRegistered)){
                 String error = "Tú última acción registrada fue también una "+action+". ¿Estás seguro que quieres " +
@@ -101,7 +79,7 @@ public class RegisterController implements Initializable {
             }
 
             if(isValid){
-                timeRegister.insertTimeRegister();
+                if(!timeRegister.insertTimeRegister()) new Utilities().showAlert(Alert.AlertType.ERROR, "Error", "Error");
                 new Utilities().showAlert(Alert.AlertType.INFORMATION, "Success", "Información guardada con éxito");
                 Stage thisStage = (Stage) btnCancel.getScene().getWindow();
                 thisStage.close();
@@ -111,14 +89,13 @@ public class RegisterController implements Initializable {
             }
 
 
-        } catch (SQLException | ParseException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
     }
 
-
-    public void cancel(ActionEvent event) {
+    public void cancel() {
         Stage thisStage = (Stage) btnCancel.getScene().getWindow();
         thisStage.close();
 
