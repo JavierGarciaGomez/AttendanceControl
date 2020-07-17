@@ -98,9 +98,6 @@ public class ChangeRegistersController implements Initializable {
 
     @FXML
     private void save() {
-
-
-
         try {
             int id = Integer.parseInt(txtId.getText());
             String userName = cboUser.getSelectionModel().getSelectedItem();
@@ -111,8 +108,8 @@ public class ChangeRegistersController implements Initializable {
             int min = spinMin.getValue();
             Date date = new Utilities().StringToDate(localDate.toString()+" "+hour+":"+min);
             TimeRegister timeRegister = new TimeRegister(id,userName,branch,action,date);
-            System.out.println(timeRegister);
-        } catch (ParseException e) {
+            timeRegister.updateTimeRegister();
+        } catch (ParseException | SQLException e) {
             e.printStackTrace();
         }
 

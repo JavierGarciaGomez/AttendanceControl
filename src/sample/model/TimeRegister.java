@@ -94,7 +94,8 @@ public class TimeRegister {
         preparedStatement.setString(1, this.userName);
         preparedStatement.setString(2, this.branch);
         preparedStatement.setString(3, this.action);
-        preparedStatement.setDate(4, (java.sql.Date) this.date);
+        preparedStatement.setDate(4, (new java.sql.Date(this.date.getTime())));
+        preparedStatement.setInt(5, this.id);
         System.out.println(preparedStatement);
         boolean isSuccessful = preparedStatement.execute();
         connectionDB.closeConnection();

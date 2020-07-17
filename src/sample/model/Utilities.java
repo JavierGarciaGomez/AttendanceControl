@@ -38,10 +38,13 @@ public class Utilities {
     }
 
     public static void main(String[] args) throws ParseException {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        String time = dateTimeFormatter.format(now);
+        System.out.println(time);
     }
 
     public Date StringToDate(String string) throws ParseException {
-        System.out.println("Trying to parse: "+string);
         Date date=new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(string);
         return date;
     }
