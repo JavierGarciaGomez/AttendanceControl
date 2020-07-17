@@ -12,7 +12,7 @@
          <Button fx:id="btnIncidences" alignment="CENTER" onAction="#openIncidences" prefWidth="100.0" text="Incidencias" GridPane.rowIndex="2" />
          <Button fx:id="btnModify" alignment="CENTER" onAction="#changeRegisters" prefWidth="100.0" text="Modificar" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          <Button fx:id="btnReview" alignment="CENTER" onAction="#reviewRegisters" prefWidth="100.0" text="Revisar" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-         <Button fx:id="btnReports" alignment="CENTER" prefWidth="100.0" text="Reportes" GridPane.rowIndex="3" />
+         <Button fx:id="btnReports" alignment="CENTER" onAction="#generateReports" prefWidth="100.0" text="Reportes" GridPane.rowIndex="3" />
          <Button fx:id="btnManageUsers" alignment="CENTER" onAction="#manageUsers" prefHeight="${btnReview.height}" prefWidth="100.0" text="Gestiona usuarios" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          <columnConstraints>
             <ColumnConstraints />

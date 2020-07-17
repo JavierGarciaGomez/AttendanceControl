@@ -67,10 +67,9 @@ public class TimeRegister {
     }
 
     public String getDateAsString() {
-        this.date = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm");
         Calendar calendar = Calendar.getInstance();
-        this.date = calendar.getTime();
+        calendar.setTime(this.date);
         String dateAsString = sdf.format(this.date);
         return dateAsString;
     }
@@ -82,6 +81,20 @@ public class TimeRegister {
         preparedStatement.setString(1, this.userName);
         preparedStatement.setString(2, this.branch);
         preparedStatement.setString(3, this.action);
+        System.out.println(preparedStatement);
+        boolean isSuccessful = preparedStatement.execute();
+        connectionDB.closeConnection();
+        return isSuccessful;
+    }
+
+    public boolean updateTimeRegister() throws SQLException {
+        ConnectionDB connectionDB = new ConnectionDB();
+        String sql = "UPDATE attendanceRegister SET username = ?, branch=?, action=?, time=? WHERE id=?";
+        PreparedStatement preparedStatement = connectionDB.getConnection().prepareStatement(sql);
+        preparedStatement.setString(1, this.userName);
+        preparedStatement.setString(2, this.branch);
+        preparedStatement.setString(3, this.action);
+        preparedStatement.setDate(4, (java.sql.Date) this.date);
         System.out.println(preparedStatement);
         boolean isSuccessful = preparedStatement.execute();
         connectionDB.closeConnection();

@@ -3,8 +3,11 @@ package sample.model;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Optional;
 
 public class Utilities {
@@ -33,4 +36,15 @@ public class Utilities {
         String nowAsText=dtf.format(now);
         return nowAsText;
     }
+
+    public static void main(String[] args) throws ParseException {
+    }
+
+    public Date StringToDate(String string) throws ParseException {
+        System.out.println("Trying to parse: "+string);
+        Date date=new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(string);
+        return date;
+    }
+
+
 }
