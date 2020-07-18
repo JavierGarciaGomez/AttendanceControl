@@ -74,6 +74,16 @@ public class TimeRegister {
         return new TimeRegister(id, userName, branch, action, localDateTime);
     }
 
+    public int getMaxID() throws SQLException {
+        ConnectionDB connectionDB = new ConnectionDB();
+        String sql = "SELECT MAX(ID) FROM attendanceRegister";
+        ResultSet resultSet = connectionDB.executeQuery(sql);
+        resultSet.next();
+        int maxId=resultSet.getInt(1);
+        connectionDB.closeConnection();
+        return maxId;
+    }
+
 
     public ObservableList<TimeRegister> getTimeRegisters() throws SQLException {
         ObservableList<TimeRegister> timeRegisters = FXCollections.observableArrayList();
@@ -135,9 +145,23 @@ public class TimeRegister {
         preparedStatement.setString(2, this.branch);
         preparedStatement.setString(3, this.action);
         System.out.println(preparedStatement);
-        boolean isSuccessful = preparedStatement.execute();
+        preparedStatement.execute();
         connectionDB.closeConnection();
     }
+
+    public void insertNewTimeRegister() throws SQLException {
+        ConnectionDB connectionDB = new ConnectionDB();
+        String sql = "INSERT INTO attendanceRegister (userName, branch, action, time) VALUES (?, ?, ?, ?)";
+        PreparedStatement preparedStatement = connectionDB.getConnection().prepareStatement(sql);
+        preparedStatement.setString(1, this.userName);
+        preparedStatement.setString(2, this.branch);
+        preparedStatement.setString(3, this.action);
+        preparedStatement.setTimestamp(4, Timestamp.valueOf(this.localDateTime));
+        System.out.println(preparedStatement);
+        preparedStatement.execute();
+        connectionDB.closeConnection();
+    }
+
 
     public void updateTimeRegister() throws SQLException {
         ConnectionDB connectionDB = new ConnectionDB();

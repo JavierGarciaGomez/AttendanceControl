@@ -1,8 +1,12 @@
 package sample.model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Comparator;
 
 public class User {
     private int id;
@@ -18,7 +22,6 @@ public class User {
     public User(int id) {
         this.id = id;
     }
-
 
     public User(String user) {
         this.user = user;
@@ -38,7 +41,7 @@ public class User {
         this.isActive = isActive;
     }
 
-
+    // GETTERS and SETTERS
     public int getId() {
         return id;
     }
@@ -79,15 +82,55 @@ public class User {
         this.pass = pass;
     }
 
-    public boolean checkLogin() throws SQLException {
+    // Another getters
+    public User getUser(String username) throws SQLException {
         ConnectionDB connectionDB = new ConnectionDB();
-        String sql = "SELECT * FROM users WHERE user = '" + user + "' AND pass ='" + pass + "'";
+        String sql = "SELECT * FROM users WHERE user = '" + this.user+"'";
         ResultSet resultSet = connectionDB.executeQuery(sql);
-        boolean isUser = resultSet.next();
+        resultSet.next();
+        int id=resultSet.getInt(1);
+        String name=resultSet.getString(2);
+        String lastName=resultSet.getString(3);
+        String userName=resultSet.getString(4);
+        String pass=resultSet.getString(5);
+        boolean isActive=resultSet.getBoolean(6);
+        User user = new User(id, name, lastName, userName, pass, isActive);
         connectionDB.closeConnection();
-        return isUser;
+
+        return user;
     }
 
+    public int getMaxID() throws SQLException {
+        ConnectionDB connectionDB = new ConnectionDB();
+        String sql = "SELECT MAX(ID) FROM USERS";
+        ResultSet resultSet = connectionDB.executeQuery(sql);
+        resultSet.next();
+        int maxId=resultSet.getInt(1);
+        connectionDB.closeConnection();
+        return maxId;
+    }
+
+
+    public ObservableList<String> getUsersNames() throws SQLException {
+        ObservableList<String> userNames = FXCollections.observableArrayList();
+
+        // SQL
+        ConnectionDB connectionDB = new ConnectionDB();
+        String sql = "SELECT user FROM users";
+        PreparedStatement preparedStatement = connectionDB.getConnection().prepareStatement(sql);
+        System.out.println(preparedStatement);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        // Loop the resultset
+        while(resultSet.next()){
+            userNames.add(resultSet.getString(1));
+        }
+        userNames.sort((s1, s2) -> s1.compareTo(s2));
+        return userNames;
+    }
+
+
+    // CRUD
     public void addUser() throws SQLException {
         ConnectionDB connectionDB = new ConnectionDB();
         String sql = "INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)";
@@ -107,14 +150,15 @@ public class User {
 
     }
 
-    public int getMaxID() throws SQLException {
+
+    // Another methods
+    public boolean checkLogin() throws SQLException {
         ConnectionDB connectionDB = new ConnectionDB();
-        String sql = "SELECT MAX(ID) FROM USERS";
+        String sql = "SELECT * FROM users WHERE user = '" + user + "' AND pass ='" + pass + "'";
         ResultSet resultSet = connectionDB.executeQuery(sql);
-        resultSet.next();
-        int maxId=resultSet.getInt(1);
+        boolean isUser = resultSet.next();
         connectionDB.closeConnection();
-        return maxId;
+        return isUser;
     }
 
     public boolean checkAvailableId() throws SQLException {
@@ -136,21 +180,4 @@ public class User {
         return isAvailable;
     }
 
-    public User getUser(String username) throws SQLException {
-        ConnectionDB connectionDB = new ConnectionDB();
-        String sql = "SELECT * FROM users WHERE user = '" + this.user+"'";
-        ResultSet resultSet = connectionDB.executeQuery(sql);
-        resultSet.next();
-        int id=resultSet.getInt(1);
-        String name=resultSet.getString(2);
-        String lastName=resultSet.getString(3);
-        String userName=resultSet.getString(4);
-        String pass=resultSet.getString(5);
-        boolean isActive=resultSet.getBoolean(6);
-        User user = new User(id, name, lastName, userName, pass, isActive);
-        connectionDB.closeConnection();
-
-        return user;
-
-    }
 }
