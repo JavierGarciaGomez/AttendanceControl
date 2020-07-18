@@ -7,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import sample.model.TimeRegister;
 import sample.model.User;
 import sample.model.Utilities;
@@ -40,6 +39,7 @@ public class ChangeRegistersController implements Initializable {
     public Button btnCancelAdd;
     public VBox panVboxLeft;
     private User user;
+    private TableView.TableViewSelectionModel<TimeRegister> defaultSelectionModel;
 
 
     @Override
@@ -51,6 +51,8 @@ public class ChangeRegistersController implements Initializable {
         });
         this.panVboxLeft.getChildren().remove(btnSaveNew);
         this.panVboxLeft.getChildren().remove(btnCancelAdd);
+
+        defaultSelectionModel = tblTable.getSelectionModel();
     }
 
     public void initData(User user) {
@@ -87,33 +89,38 @@ public class ChangeRegistersController implements Initializable {
 
     @FXML
     private void selectRegister() {
-        int index = tblTable.getSelectionModel().getSelectedIndex();
+        try {
+            int index = tblTable.getSelectionModel().getSelectedIndex();
 
-        if (index <= -1) {
-            return;
+            if (index <= -1) {
+                return;
+            }
+            txtId.setText(colId.getCellData(index).toString());
+            cboUser.getSelectionModel().select(colUserName.getCellData(index));
+            cboBranch.getSelectionModel().select(colBranch.getCellData(index));
+            cboAction.getSelectionModel().select(colAction.getCellData(index));
+
+            // Getting the date and time
+            String mystring = colTime.getCellData(index);
+            String[] arr = mystring.split(" ", 2);
+            String date = arr[0];   //the
+            String time = arr[1];     //quick brown fox
+
+            // Date
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate localDate = LocalDate.parse(date, formatter);
+
+            String[] hourMinutes = time.split(":");
+            int hour = Integer.parseInt(hourMinutes[0].trim());
+            int min = Integer.parseInt(hourMinutes[1].trim());
+            //
+            dtpDatePicker.setValue(localDate);
+            spinHour.getValueFactory().setValue(hour);
+            spinMin.getValueFactory().setValue(min);
+
+        } catch (NullPointerException ignore) {
+
         }
-        txtId.setText(colId.getCellData(index).toString());
-        cboUser.getSelectionModel().select(colUserName.getCellData(index));
-        cboBranch.getSelectionModel().select(colBranch.getCellData(index));
-        cboAction.getSelectionModel().select(colAction.getCellData(index));
-
-        // Getting the date and time
-        String mystring = colTime.getCellData(index);
-        String[] arr = mystring.split(" ", 2);
-        String date = arr[0];   //the
-        String time = arr[1];     //quick brown fox
-
-        // Date
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate localDate = LocalDate.parse(date, formatter);
-
-        String[] hourMinutes = time.split(":");
-        int hour = Integer.parseInt(hourMinutes[0].trim());
-        int min = Integer.parseInt(hourMinutes[1].trim());
-        //
-        dtpDatePicker.setValue(localDate);
-        spinHour.getValueFactory().setValue(hour);
-        spinMin.getValueFactory().setValue(min);
     }
 
     @FXML
@@ -147,13 +154,15 @@ public class ChangeRegistersController implements Initializable {
     }
 
     private void setAddNewPane(boolean isInsertPane) {
-        if(isInsertPane){
+        if (isInsertPane) {
+            this.tblTable.setSelectionModel(null);
             this.panVboxLeft.getChildren().remove(btnSave);
             this.panVboxLeft.getChildren().remove(btnAddNew);
             this.panVboxLeft.getChildren().remove(btnDelete);
             this.panVboxLeft.getChildren().add(btnSaveNew);
             this.panVboxLeft.getChildren().add(btnCancelAdd);
-        } else{
+        } else {
+            this.tblTable.setSelectionModel(defaultSelectionModel);
             this.panVboxLeft.getChildren().add(btnSave);
             this.panVboxLeft.getChildren().add(btnAddNew);
             this.panVboxLeft.getChildren().add(btnDelete);
@@ -164,13 +173,39 @@ public class ChangeRegistersController implements Initializable {
 
     @FXML
     private void Delete() {
+        try {
+            int id = Integer.parseInt(txtId.getText());
+            String userName = cboUser.getSelectionModel().getSelectedItem();
+            String branch = cboBranch.getSelectionModel().getSelectedItem();
+            String action = cboAction.getSelectionModel().getSelectedItem();
+            LocalDate localDate = dtpDatePicker.getValue();
+            int hour = spinHour.getValue();
+            int min = spinMin.getValue();
+            LocalDateTime localDateTime = localDate.atTime(hour, min);
+            TimeRegister timeRegister = new TimeRegister(id);
+
+            String confirmationTxt = "¿Estás seguro de querer eliminar el registro siguiente? " +
+                    "\nid: "+id+
+                    "\nuser: "+userName+
+                    "\nbranch: "+userName+
+                    "\naction: "+userName+
+                    "\nfecha y hora: "+localDateTime;
+
+            boolean answer = new Utilities().showAlert(Alert.AlertType.CONFIRMATION, "¿Estás seguro de querer continuar?", confirmationTxt);
+            if(!answer) return;
+
+            timeRegister.deleteTimeRegister();
+            this.loadTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void saveNew(ActionEvent event) {
         try {
             // Fields
-            boolean isValid=true;
-            String errorList ="No se ha podido registrar el usuario, porque se encontraron los siguientes errores:\n";
+            boolean isValid = true;
+            String errorList = "No se ha podido registrar el usuario, porque se encontraron los siguientes errores:\n";
             // Getting the data
             int id = Integer.parseInt(txtId.getText());
             String userName = cboUser.getSelectionModel().getSelectedItem();
@@ -182,21 +217,21 @@ public class ChangeRegistersController implements Initializable {
 
             LocalDateTime localDateTime = localDate.atTime(hour, min);
             TimeRegister timeRegister = new TimeRegister(id, userName, branch, action, localDateTime);
-            if(timeRegister.isDateAndActionRegistered()){
-                errorList+="Ya se cuenta con un registro de "+action+" de "+user+" con fecha de hoy";
-                isValid=false;
+            if (timeRegister.isDateAndActionRegistered()) {
+                errorList += "Ya se cuenta con un registro de " + action + " de " + userName + " con la fecha requerida";
+                isValid = false;
             }
-            if(isValid){
-                timeRegister.insertNewTimeRegister();
+            if (isValid) {
+                timeRegister.insertTimeRegister();
                 new Utilities().showAlert(Alert.AlertType.INFORMATION, "Success", "Información guardada con éxito");
-            }            else{
+                setAddNewPane(false);
+            } else {
                 new Utilities().showAlert(Alert.AlertType.ERROR, "Error de registro", errorList);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         this.loadTable();
-        setAddNewPane(false);
     }
 
     public void cancelAdd(ActionEvent event) {

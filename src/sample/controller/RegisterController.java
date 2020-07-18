@@ -26,12 +26,13 @@ public class RegisterController implements Initializable {
     public Label lblLastRegister;
     private final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     private String lastActionRegistered;
+    private LocalDateTime now;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cboBranch.getSelectionModel().select(0);
         cboAction.getSelectionModel().select(0);
-        LocalDateTime now = LocalDateTime.now();
+        now = LocalDateTime.now();
         System.out.println(now);
         lblDateHour.setText(DTF.format(now));
     }
@@ -63,7 +64,8 @@ public class RegisterController implements Initializable {
             String user = lblUser.getText();
             String branch = cboBranch.getSelectionModel().getSelectedItem();
             String action = cboAction.getSelectionModel().getSelectedItem();
-            TimeRegister timeRegister = new TimeRegister(user, branch, action);
+
+            TimeRegister timeRegister = new TimeRegister(-1, user, branch, action, now);
             if(timeRegister.isDateAndActionRegistered()){
                 errorList+="Ya se cuenta con un registro de "+action+" de "+user+" con fecha de hoy";
                 isValid=false;

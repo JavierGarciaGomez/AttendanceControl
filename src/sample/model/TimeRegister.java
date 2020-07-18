@@ -33,6 +33,10 @@ public class TimeRegister {
         this.localDateTime = localDateTime;
     }
 
+    public TimeRegister(int id) {
+        this.id=id;
+    }
+
     // Getters and setters
     public int getId() {
         return id;
@@ -57,6 +61,25 @@ public class TimeRegister {
     }
 
 
+    /*
+    CRUD
+     */
+
+    // CREATE
+    public void insertTimeRegister() throws SQLException {
+        ConnectionDB connectionDB = new ConnectionDB();
+        String sql = "INSERT INTO attendanceRegister (userName, branch, action, time) VALUES (?, ?, ?, ?)";
+        PreparedStatement preparedStatement = connectionDB.getConnection().prepareStatement(sql);
+        preparedStatement.setString(1, this.userName);
+        preparedStatement.setString(2, this.branch);
+        preparedStatement.setString(3, this.action);
+        preparedStatement.setTimestamp(4, Timestamp.valueOf(this.localDateTime));
+        System.out.println(preparedStatement);
+        preparedStatement.execute();
+        connectionDB.closeConnection();
+    }
+
+    // READERS
     public TimeRegister getLastTimeRegister(String userName) throws SQLException {
         ConnectionDB connectionDB = new ConnectionDB();
         String sql = "SELECT * FROM attendanceRegister WHERE time = " +
@@ -132,37 +155,7 @@ public class TimeRegister {
         return timeRegisters;
     }
 
-
-
-    /*
-    CRUD
-     */
-    public void insertTimeRegister() throws SQLException {
-        ConnectionDB connectionDB = new ConnectionDB();
-        String sql = "INSERT INTO attendanceRegister (userName, branch, action, time) VALUES (?, ?, ?, current_timestamp())";
-        PreparedStatement preparedStatement = connectionDB.getConnection().prepareStatement(sql);
-        preparedStatement.setString(1, this.userName);
-        preparedStatement.setString(2, this.branch);
-        preparedStatement.setString(3, this.action);
-        System.out.println(preparedStatement);
-        preparedStatement.execute();
-        connectionDB.closeConnection();
-    }
-
-    public void insertNewTimeRegister() throws SQLException {
-        ConnectionDB connectionDB = new ConnectionDB();
-        String sql = "INSERT INTO attendanceRegister (userName, branch, action, time) VALUES (?, ?, ?, ?)";
-        PreparedStatement preparedStatement = connectionDB.getConnection().prepareStatement(sql);
-        preparedStatement.setString(1, this.userName);
-        preparedStatement.setString(2, this.branch);
-        preparedStatement.setString(3, this.action);
-        preparedStatement.setTimestamp(4, Timestamp.valueOf(this.localDateTime));
-        System.out.println(preparedStatement);
-        preparedStatement.execute();
-        connectionDB.closeConnection();
-    }
-
-
+    // UPDATE
     public void updateTimeRegister() throws SQLException {
         ConnectionDB connectionDB = new ConnectionDB();
         String sql = "UPDATE attendanceRegister SET username = ?, branch=?, action=?, time=? WHERE id=?";
@@ -174,8 +167,18 @@ public class TimeRegister {
         preparedStatement.setTimestamp(4, Timestamp.valueOf(this.localDateTime));
         preparedStatement.setInt(5, this.id);
         System.out.println(preparedStatement);
-        boolean isSuccessful = preparedStatement.execute();
-        System.out.println("IS SUCCESSFUL "+isSuccessful);
+        preparedStatement.execute();
+        connectionDB.closeConnection();
+    }
+
+    // DELETE
+    public void deleteTimeRegister() throws SQLException {
+        ConnectionDB connectionDB = new ConnectionDB();
+        String sql = "DELETE FROM attendanceRegister WHERE id=?";
+        PreparedStatement preparedStatement = connectionDB.getConnection().prepareStatement(sql);
+        preparedStatement.setInt(1, this.id);
+        System.out.println(preparedStatement);
+        preparedStatement.execute();
         connectionDB.closeConnection();
     }
 
@@ -184,7 +187,7 @@ public class TimeRegister {
 
     public boolean isDateAndActionRegistered() throws SQLException {
         // Converting LocalDateTime as MySql date
-        LocalDate localDate = LocalDate.now();
+        LocalDate localDate = this.localDateTime.toLocalDate();
         java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
 
         // Connecting to DATABASE
