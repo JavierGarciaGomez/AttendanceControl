@@ -187,8 +187,8 @@ public class ChangeRegistersController implements Initializable {
             String confirmationTxt = "¿Estás seguro de querer eliminar el registro siguiente? " +
                     "\nid: "+id+
                     "\nuser: "+userName+
-                    "\nbranch: "+userName+
-                    "\naction: "+userName+
+                    "\nbranch: "+branch+
+                    "\naction: "+action+
                     "\nfecha y hora: "+localDateTime;
 
             boolean answer = new Utilities().showAlert(Alert.AlertType.CONFIRMATION, "¿Estás seguro de querer continuar?", confirmationTxt);

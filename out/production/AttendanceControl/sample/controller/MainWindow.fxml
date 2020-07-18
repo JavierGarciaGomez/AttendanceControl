@@ -32,7 +32,7 @@
             <ImageView fx:id="imgPicture" fitWidth="200.0" preserveRatio="true" />
          </center>
          <bottom>
-            <Button fx:id="btnChangeUser" alignment="CENTER" text="Cambiar Usuario" BorderPane.alignment="CENTER" />
+            <Button fx:id="btnChangeUser" alignment="CENTER" onAction="#changeUser" text="Cambiar Usuario" BorderPane.alignment="CENTER" />
          </bottom>
       </BorderPane>
    </center>

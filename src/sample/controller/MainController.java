@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -118,6 +119,7 @@ public class MainController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("IncidencesWindow.fxml"));
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
+
             stage.initModality(Modality.APPLICATION_MODAL);
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -152,27 +154,44 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-    public void initData(User user)  {
-        this.user=user;
-        lblName.setText(user.getName()+" "+user.getLastName());
+    public void initData(User user) {
+        this.user = user;
+        lblName.setText(user.getName() + " " + user.getLastName());
         setPicture();
 
     }
 
     private void setPicture() {
         String userName = user.getUser();
-        try{
-            File file = new File("res\\"+userName+".png");
+        try {
+            File file = new File("res\\" + userName + ".png");
             if (!file.exists()) {
-                file = new File("res\\"+"Morgana"+".png");
+                file = new File("res\\" + "Morgana" + ".png");
             }
             Image image = new Image(new FileInputStream(file));
             imgPicture.setImage(image);
-        } catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
 
+    public void changeUser(ActionEvent actionEvent) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginWindow.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Login Window");
+            stage.show();
+            Stage thisStage = (Stage) btnChangeUser.getScene().getWindow();
+            thisStage.close();
+        } catch (IOException e) {
+            System.out.println("***********************NOT FOUNDED IO");
+            e.printStackTrace();
+        }
 
+    }
 }
+
