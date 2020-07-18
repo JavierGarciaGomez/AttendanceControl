@@ -3,7 +3,6 @@ package sample.model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class User {
     private int id;
@@ -89,7 +88,7 @@ public class User {
         return isUser;
     }
 
-    public boolean addUser() throws SQLException {
+    public void addUser() throws SQLException {
         ConnectionDB connectionDB = new ConnectionDB();
         String sql = "INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = connectionDB.getConnection().prepareStatement(sql);
@@ -106,7 +105,6 @@ public class User {
 
         connectionDB.closeConnection();
 
-        return isSuccessful;
     }
 
     public int getMaxID() throws SQLException {

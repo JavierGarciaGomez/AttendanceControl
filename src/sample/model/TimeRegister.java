@@ -127,7 +127,7 @@ public class TimeRegister {
     /*
     CRUD
      */
-    public boolean insertTimeRegister() throws SQLException {
+    public void insertTimeRegister() throws SQLException {
         ConnectionDB connectionDB = new ConnectionDB();
         String sql = "INSERT INTO attendanceRegister (userName, branch, action, time) VALUES (?, ?, ?, current_timestamp())";
         PreparedStatement preparedStatement = connectionDB.getConnection().prepareStatement(sql);
@@ -137,7 +137,6 @@ public class TimeRegister {
         System.out.println(preparedStatement);
         boolean isSuccessful = preparedStatement.execute();
         connectionDB.closeConnection();
-        return isSuccessful;
     }
 
     public void updateTimeRegister() throws SQLException {

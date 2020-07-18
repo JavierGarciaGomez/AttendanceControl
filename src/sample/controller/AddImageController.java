@@ -2,7 +2,6 @@
 package sample.controller;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -23,7 +22,6 @@ public class AddImageController implements Initializable {
     public Button btnSave;
     private User user;
     private List<File> files;
-    private File copy;
 
 
     @Override
@@ -50,7 +48,7 @@ public class AddImageController implements Initializable {
     }
 
     public void save(ActionEvent event) {
-        copy = new File("res\\"+user.getUser()+".png");
+        File copy = new File("res\\" + user.getUser() + ".png");
         List<Integer> bytes = new ArrayList<>();
         try {
             FileInputStream fileInputStream = new FileInputStream(files.get(0));

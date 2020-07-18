@@ -4,15 +4,15 @@ import java.sql.*;
 
 public class ConnectionDB {
 
-    private Connection connection;
-    private final String host = "localhost";
-    private final String dataBase = "exercises";
-    private final String user= "test";
-    private final String password= "secret";
-    private final String stringConnection = "jdbc:mysql://"+host+"/"+dataBase;
+    private final Connection connection;
 
 
     public ConnectionDB() throws SQLException {
+        String user = "test";
+        String password = "secret";
+        String dataBase = "exercises";
+        String host = "localhost";
+        String stringConnection = "jdbc:mysql://" + host + "/" + dataBase;
         connection = DriverManager.getConnection(stringConnection, user, password);
         connection.setAutoCommit(true);
     }
@@ -24,8 +24,7 @@ public class ConnectionDB {
 
     public ResultSet executeQuery(String sql) throws SQLException {
         Statement statement = this.connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
-        return resultSet;
+        return statement.executeQuery(sql);
     }
 
     public int update(String sql) throws SQLException {

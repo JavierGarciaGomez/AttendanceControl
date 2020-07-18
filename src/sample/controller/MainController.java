@@ -18,7 +18,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -34,10 +33,9 @@ public class MainController implements Initializable {
     private User user;
 
     public void registerTime(ActionEvent event) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterWindow.fxml"));
-        Parent root = null;
         try {
-            root = fxmlLoader.load();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterWindow.fxml"));
+            Parent root = fxmlLoader.load();
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -55,30 +53,29 @@ public class MainController implements Initializable {
     }
 
     public void reviewRegisters(ActionEvent event) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ReviewRegistersWindow.fxml"));
-        Parent root = null;
         try {
-            root = fxmlLoader.load();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ReviewRegistersWindow.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Review registers");
+
+            ReviewRegistersController controller = fxmlLoader.getController();
+            controller.initData(this.user);
+
+            stage.showAndWait();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Review registers");
-
-        ReviewRegistersController controller = fxmlLoader.getController();
-        controller.initData(this.user);
-
-        stage.showAndWait();
     }
 
     public void generateReports(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ReportsGeneratorWindow.fxml"));
-            Parent root = null;
-            root = fxmlLoader.load();
+            Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             Scene scene = new Scene(root);
@@ -99,8 +96,7 @@ public class MainController implements Initializable {
 
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ChangeRegistersWindow.fxml"));
-            Parent root = null;
-            root = fxmlLoader.load();
+            Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             Scene scene = new Scene(root);
@@ -120,9 +116,7 @@ public class MainController implements Initializable {
     public void openIncidences(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("IncidencesWindow.fxml"));
-            Parent root = null;
-
-            root = fxmlLoader.load();
+            Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             Scene scene = new Scene(root);
@@ -140,19 +134,18 @@ public class MainController implements Initializable {
     }
 
     public void manageUsers(ActionEvent event) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ManageUserWindow.fxml"));
-        Parent root = null;
         try {
-            root = fxmlLoader.load();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ManageUserWindow.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Manage users");
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Manage users");
-        stage.showAndWait();
     }
 
     @Override

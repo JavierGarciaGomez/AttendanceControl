@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ReportsGeneratorController implements Initializable {
-    public TableView tblTable;
+    public TableView <TimeRegister> tblTable;
     public TableColumn<TimeRegister, Integer> colId;
     public TableColumn <TimeRegister, String> colUserName;
     public TableColumn <TimeRegister, String> colBranch;
@@ -29,11 +29,11 @@ public class ReportsGeneratorController implements Initializable {
 
     public void initData(User user) {
         this.user = user;
-        this.colId.setCellValueFactory(new PropertyValueFactory("id"));
-        this.colUserName.setCellValueFactory(new PropertyValueFactory("userName"));
-        this.colBranch.setCellValueFactory(new PropertyValueFactory("branch"));
-        this.colAction.setCellValueFactory(new PropertyValueFactory("action"));
-        this.colTime.setCellValueFactory(new PropertyValueFactory("dateAsString"));
+        this.colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        this.colUserName.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        this.colBranch.setCellValueFactory(new PropertyValueFactory<>("branch"));
+        this.colAction.setCellValueFactory(new PropertyValueFactory<>("action"));
+        this.colTime.setCellValueFactory(new PropertyValueFactory<>("dateAsString"));
 
         loadTable();
     }
